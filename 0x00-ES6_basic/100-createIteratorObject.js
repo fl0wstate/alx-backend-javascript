@@ -1,9 +1,7 @@
-// 100-createIteratorObject.js
 export default function createIteratorObject(report) {
   const allEmployees = report.allEmployees;
   const employeeList = [];
 
-  // Flatten all employees into a single array
   for (const department in allEmployees) {
     if (allEmployees.hasOwnProperty(department)) {
       employeeList.push(...allEmployees[department]);
