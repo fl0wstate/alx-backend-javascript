@@ -6,5 +6,5 @@ export default function iterateThroughObject(reportWithIterator) {
     }
   }
 
-  return newArr.join(" | ");
+  return newArr.join(' | ');
 }
