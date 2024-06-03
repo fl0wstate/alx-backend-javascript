@@ -1,8 +1,8 @@
 export default class HoldbertonCourse {
   constructor(name, length, students) {
-    this._name = name;
-    this._length = length;
-    this._students = students;
+    this.name = name;
+    this.length = length;
+    this.students = students;
   }
 
   get name() {
@@ -18,12 +18,12 @@ export default class HoldbertonCourse {
   }
 
   get length() {
-    return this._name;
+    return this._length;
   }
 
   set length(value) {
     if (Number.isInteger(value)) {
-      this._length = parseInt(value, 10);
+      this._length = value;
     } else {
       throw new TypeError('Length must be an integer');
     }
