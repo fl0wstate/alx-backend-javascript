@@ -12,14 +12,3 @@ export default class Building {
     return this._sqft;
   }
 }
-
-const b = new Building(99);
-console.log(b);
-
-class TestBuilding extends Building {}
-
-try {
-    new TestBuilding(199)
-} catch(err) {
-    console.log(err);
-}
