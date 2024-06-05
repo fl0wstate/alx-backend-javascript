@@ -3,4 +3,4 @@ export default function setFromArray(array) {
     return [];
   }
   return new Set(array);
-};
+}
