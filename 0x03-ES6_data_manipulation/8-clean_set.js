@@ -1,6 +1,6 @@
 export default function cleanSet(set, startString) {
   if (!set || !startString || typeof startString !== 'string') {
-    return '\n';
+    return '';
   }
   let res = '';
   for (const elem of set) {
