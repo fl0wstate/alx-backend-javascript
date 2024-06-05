@@ -1,5 +1,5 @@
 export default function cleanSet(set, startString) {
-  if (!set || !startString || typeof startString !== 'string') {
+  if (!set || !startString) {
     return '';
   }
   let res = '';
