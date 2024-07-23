@@ -5,9 +5,9 @@ module.exports = function countStudents(filepath) {
   // Make a stream
   const stream = fs.createReadStream(filepath);
   
-  if (!stream) {
-    throw new Error('Cannot load the database');
-  }
+  stream.on('error', (_) => {
+    throw new Error("Cannot load the database");
+  });
 
   const rl = readline.createInterface({input: stream});
   const data_holder = [];
