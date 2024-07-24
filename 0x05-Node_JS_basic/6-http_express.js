@@ -1,5 +1,5 @@
 const exp = require('express');
-const app = express();
+const app = exp();
 const port = 1245;
 
 app.get('/', (request, response) => {
