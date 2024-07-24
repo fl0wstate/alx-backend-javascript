@@ -33,7 +33,11 @@ module.exports = async function countStudents(filepath) {
       console.log(`Number of students: ${dataHolder.length - 1}`);
       console.log(`Number of students in CS: ${cs.length}. List: ${cs.join(', ')}`);
       console.log(`Number of students in SWE: ${swe.length}. List: ${swe.join(', ')}`);
-      resolve();
+      resolve([
+          `Number of students: ${dataHolder.length - 1}`,
+          `Number of students in CS: ${cs.length}. List: ${cs.join(', ')}`,
+          `Number of students in SWE: ${swe.length}. List: ${swe.join(', ')}`
+      ].join('\n'));
     });
   });
 }
