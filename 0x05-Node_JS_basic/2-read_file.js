@@ -13,7 +13,9 @@ module.exports = function countStudents(filepath) {
   const data_holder = [];
 
   rl.on('line', (row) => {
-    data_holder.push(row.split(","));
+    if (row.trim()) {
+      data_holder.push(row.split(","));
+    }
   });
 
   rl.on('close', () => {
