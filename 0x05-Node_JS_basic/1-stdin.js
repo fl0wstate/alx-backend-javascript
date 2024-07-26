@@ -6,7 +6,7 @@ process.stdin.on('data', (data) => {
   process.exit();
 });
 
-if (process.stdin.isTTY) {
+if (!process.stdin.isTTY) {
   process.on('exit', () => {
     process.stdout.write('This important software is now closing\n');
   });
