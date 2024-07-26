@@ -1,0 +1,10 @@
+{
+  "name": "freaking-t(-.-t)-javascript",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "mocha || true "
+  },
+  "devDependencies": {
+    "mocha": "^10.7.0"
+  }
+}
