@@ -3,67 +3,103 @@ const http = require('http');
 const port = 1245;
 const fs = require('fs');
 const readline = require('readline');
-const { warn } = require('console');
 
-async function countStudents(filepath) {
+function countStudents(filepath) {
   return new Promise((resolve, reject) => {
-    let result = [];
-    // Make a stream
-    const stream = fs.createReadStream(filepath);
-    stream.on('error', () => {
-      reject(new Error('Cannot load the database'));
-    });
-    const rl = readline.createInterface({ input: stream });
-    const dataHolder = [];
-    rl.on('line', (row) => {
-      if (row.trim()) {
-        dataHolder.push(row.split(','));
+    // Check if the file exists
+    fs.access(filepath, fs.constants.F_OK, (err) => {
+      if (err) {
+        return reject(new Error('Cannot load the database'));
       }
-    });
-    rl.on('close', () => {
-      const groupedData = [];
-      for (let i = 1; i < dataHolder.length; i += 1) {
-        const [firstName, lastName, age, field] = dataHolder[i];
-        if (!groupedData[field]) {
-          groupedData[field] = [];
+
+      const stream = fs.createReadStream(filepath);
+      const rl = readline.createInterface({ input: stream });
+      const dataHolder = [];
+      rl.on('line', (row) => {
+        if (row.trim()) {
+          dataHolder.push(row.split(','));
         }
-        groupedData[field].push({ firstName, lastName, age });
-      }
-      result.push(`Number of students: ${dataHolder.length - 1}`);
-      for (const field in groupedData) {
-        if (Object.hasOwnProperty.call(groupedData, field)) {
-          const studentNames = groupedData[field].map((students) => students.firstName);
-          result.push(`Number of students in ${field}: ${groupedData[field].length}. List: ${studentNames.join(', ')}`);
+      });
+      rl.on('close', () => {
+        const groupedData = {};
+        for (let i = 1; i < dataHolder.length; i += 1) {
+          const [firstName, lastName, age, field] = dataHolder[i];
+          if (!groupedData[field]) {
+            groupedData[field] = [];
+          }
+          groupedData[field].push({ firstName, lastName, age });
         }
-      }
-      resolve(result);
+        const result = [];
+        result.push(`Number of students: ${dataHolder.length - 1}`);
+        for (const field in groupedData) {
+          if (Object.hasOwnProperty.call(groupedData, field)) {
+            const studentNames = groupedData[field].map((students) => students.firstName);
+            result.push(`Number of students in ${field}: ${groupedData[field].length}. List: ${studentNames.join(', ')}`);
+          }
+        }
+        resolve(result);
+      });
+
+      // Handle read stream errors
+      stream.on('error', () => {
+        reject(new Error('Cannot load the database'));
+      });
     });
   });
 }
 
-const app = http.createServer(async (request, response) => {
-  if (request.url === '/') {
-    response.writeHead(200, { 'Content-Type': 'text/plain' });
-    response.end('Hello Holberton School!');
-  } else if (request.url === '/students') {
-    try {
-      const result = ['This is a list of our students'];
-      countStudents(process.argv[2])
-        .then((data) => {
-          result.push(...data);
-          const resp = result.join('\n');
-          response.writeHead(
-            200,
-            { 'Content-Type': 'text/plain', 'Content-Length': resp.length },
-          );
-          response.end(resp);
-        });
-    } catch (err) {
-      console.error(err);
-    }
+// handle the response
+async function handleStudentsRoute(response) {
+  const result = ['This is the list of our students'];
+  const filepath = process.argv[2] || '';
+  let body = '';
+
+  countStudents(filepath)
+    .then((data) => {
+      // handle the data
+      result.push(...data);
+      body = result.join('\n');
+      response.writeHead(
+        200,
+        { 'Content-Type': 'text/plain', 'Content-Length': body.length },
+      );
+      response.end(body);
+    })
+    .catch((err) => {
+      // handle the console.error();
+      result.push(err.message);
+      body = result.join('\n');
+      response.writeHead(
+        404,
+        { 'Content-Type': 'text/plain', 'Content-Length': body.length },
+      );
+      response.end(body);
+    });
+}
+
+// Create a local server to receive data from
+const app = http.createServer();
+
+// Listen to the request event
+app.on('request', async (req, resp) => {
+  // handle the case of a root page
+  if (req.url === '/') {
+    const body = 'Hello Holberton School!';
+
+    resp.writeHead(
+      200,
+      { 'Content-Type': 'text/plain', 'Content-Length': body.length },
+    );
+
+    resp.end(body);
+  } else if (req.url === '/students') {
+    await handleStudentsRoute(resp);
   } else {
-    response.writeHead(404, { 'Content-Type': 'text/plain' });
-    response.end('Page not found');
+    resp.writeHead(
+      404,
+      { 'Content-Type': 'text/plain' },
+    );
+    resp.end('Page not found');
   }
 });
 
