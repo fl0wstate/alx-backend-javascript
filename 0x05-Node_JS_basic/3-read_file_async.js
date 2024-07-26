@@ -29,9 +29,9 @@ module.exports = async function countStudents(filepath) {
         if (Object.hasOwnProperty.call(groupedData, field)) {
           const studentNames = groupedData[field].map((students) => students.firstName);
           console.log(`Number of students in ${field}: ${groupedData[field].length}. List: ${studentNames.join(', ')}`);
-          resolve(`Number of students in ${field}: ${groupedData[field].length}. List: ${studentNames.join(', ')}`);
         }
       }
+      resolve();
     });
   });
 };
