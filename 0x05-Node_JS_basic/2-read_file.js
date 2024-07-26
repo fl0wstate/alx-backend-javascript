@@ -1,40 +1,25 @@
-const fs = require('fs');
-const readline = require('readline');
+const fs = require('fs').promises;
 
-module.exports = function countStudents(filepath) {
+module.exports = async function countStudents(filepath) {
   try {
-    const stream = fs.createReadStream(filepath);
-    stream.on('error', () => {
-      throw new Error('Cannot load the database');
-    });
+    const fileContent = await fs.readFile(filepath, 'utf8');
+    const lines = fileContent.split('\n').filter((line) => line.trim());
 
-    const rl = readline.createInterface({ input: stream });
-    const dataHolder = [];
+    const dataHolder = lines.slice(1).map((line) => line.split(','));
 
-    rl.on('line', (row) => {
-      if (row.trim()) {
-        dataHolder.push(row.split(','));
-      }
-    });
+    console.log(`Number of students: ${dataHolder.length}`);
 
-    rl.on('close', () => {
-      const groupedData = [];
-      for (let i = 1; i < dataHolder.length; i += 1) {
-        const [firstName, lastName, age, field] = dataHolder[i];
-        if (!groupedData[field]) {
-          groupedData[field] = [];
-        }
-        groupedData[field].push({ firstName, lastName, age });
-      }
-      console.log(`Number of students: ${dataHolder.length - 1}`);
-      for (const field in groupedData) {
-        if (Object.hasOwnProperty.call(groupedData, field)) {
-          const studentNames = groupedData[field].map((students) => students.firstName);
-          console.log(`Number of students in ${field}: ${groupedData[field].length}. List: ${studentNames.join(', ')}`);
-        }
-      }
-    });
+    const groupedData = dataHolder.reduce((acc, [firstName, lastName, age, field]) => {
+      if (!acc[field]) acc[field] = [];
+      acc[field].push({ firstName, lastName, age });
+      return acc;
+    }, {});
+
+    for (const [field, students] of Object.entries(groupedData)) {
+      const studentNames = students.map((student) => student.firstName);
+      console.log(`Number of students in ${field}: ${students.length}. List: ${studentNames.join(', ')}`);
+    }
   } catch (err) {
-    console.log(err.message);
+    throw new Error('Cannot load the database');
   }
 };
