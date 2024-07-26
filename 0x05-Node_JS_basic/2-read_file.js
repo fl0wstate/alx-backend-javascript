@@ -35,6 +35,6 @@ module.exports = function countStudents(filepath) {
       }
     });
   } catch (err) {
-    console.error(err.message);
+    console.log(err.message);
   }
 };
