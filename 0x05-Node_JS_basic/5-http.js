@@ -41,9 +41,8 @@ function countStudents(filepath) {
       });
 
       // Handle read stream errors
-      stream.on('error', () => {
-        reject(new Error('Cannot load the database'));
-      });
+      stream.on('error', () => reject(new Error('Cannot load the database')));
+      return null;
     });
   });
 }
