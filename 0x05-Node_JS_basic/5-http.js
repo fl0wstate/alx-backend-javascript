@@ -3,10 +3,11 @@ const http = require('http');
 const port = 1245;
 const fs = require('fs');
 const readline = require('readline');
+const { warn } = require('console');
 
 async function countStudents(filepath) {
   return new Promise((resolve, reject) => {
-    let result;
+    let result = [];
     // Make a stream
     const stream = fs.createReadStream(filepath);
     stream.on('error', () => {
@@ -28,11 +29,11 @@ async function countStudents(filepath) {
         }
         groupedData[field].push({ firstName, lastName, age });
       }
-      result = `Number of students: ${dataHolder.length - 1}\n`;
+      result.push(`Number of students: ${dataHolder.length - 1}`);
       for (const field in groupedData) {
         if (Object.hasOwnProperty.call(groupedData, field)) {
           const studentNames = groupedData[field].map((students) => students.firstName);
-          result += `Number of students in ${field}: ${groupedData[field].length}. List: ${studentNames.join(', ')}\n`;
+          result.push(`Number of students in ${field}: ${groupedData[field].length}. List: ${studentNames.join(', ')}`);
         }
       }
       resolve(result);
@@ -46,9 +47,17 @@ const app = http.createServer(async (request, response) => {
     response.end('Hello Holberton School!');
   } else if (request.url === '/students') {
     try {
-      const result = await countStudents(process.argv[2]);
-      response.writeHead(200, { 'Content-Type': 'text/plain' });
-      response.end(result);
+      const result = ['This is a list of our students'];
+      countStudents(process.argv[2])
+        .then((data) => {
+          result.push(...data);
+          const resp = result.join('\n');
+          response.writeHead(
+            200,
+            { 'Content-Type': 'text/plain', 'Content-Length': resp.length },
+          );
+          response.end(resp);
+        });
     } catch (err) {
       console.error(err);
     }
