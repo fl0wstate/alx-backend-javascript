@@ -9,8 +9,8 @@
     "test": "./node_modules/mocha/bin/mocha --require babel-register --exit",
     "dev": "nodemon --exec babel-node --presets babel-preset-env ./full_server/server.js ./database.csv"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "fl0wstate",
+  "license": "MIT",
   "dependencies": {
     "chai-http": "^4.3.0",
     "express": "^4.17.1"
