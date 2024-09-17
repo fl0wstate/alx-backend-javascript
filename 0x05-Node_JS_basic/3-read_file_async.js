@@ -1,4 +1,5 @@
 const fs = require('fs');
+const readline = require('readline');
 
 async function countStudents(path) {
   return new Promise((resolve, reject) => {
@@ -6,21 +7,22 @@ async function countStudents(path) {
       reject(new Error('Cannot load the database'));
     }
 
-    // reading files asynchronously
-    const filename = `${process.cwd()}/${path}`;
-    fs.readFile(filename, { encoding: 'utf-8' }, (err, data) => {
-      if (err) {
-        reject(new Error('Cannot load the database'));
+    //  allows you to operate on each line of the file
+    const stream = fs.createReadStream(path);
+    stream.on('error', () => {
+      reject(new Error('Cannot load the database'));
+    });
+    const rl = readline.createInterface({ input: stream });
+    const dataHolder = [];
+    rl.on('line', (row) => {
+      if (row.trim()) {
+        dataHolder.push(row.split(','));
       }
-      // trim all the white spaces.
-      const cleanData = data.split('\n').filter((line) => line.trim());
+    });
 
-      // make a list out of ceach row
-      const listData = cleanData.slice(1).map((line) => line.split(','));
-
-      // mutate the groupData to provide a new grouped Data
-      console.log(`Number of students: ${listData.length}`);
-      const groupData = listData.reduce((acc, studentDetails) => {
+    rl.on('close', () => {
+      console.log(`Number of students: ${dataHolder.length}`);
+      const groupData = dataHolder.reduce((acc, studentDetails) => {
         const field = studentDetails[studentDetails.length - 1];
         if (!acc[field]) acc[field] = [];
         acc[field].push({
@@ -36,8 +38,8 @@ async function countStudents(path) {
         const studentDept = students.map((student) => student.firstName);
         console.log(`Number of students in ${field}: ${students.length}. List: ${studentDept.join(', ')}`);
       }
+      resolve();
     });
-    resolve();
   });
 }
 
