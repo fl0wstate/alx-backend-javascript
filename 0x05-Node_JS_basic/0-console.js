@@ -1,3 +1,5 @@
-module.exports = (data) => {
-  process.stdout.write(`${data}\n`);
-};
+function displayMessage(data) {
+  process.stdout.write(`${data.toString().trim()}\n`);
+}
+
+module.exports = displayMessage;
