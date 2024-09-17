@@ -6,7 +6,6 @@ async function countStudents(path) {
     if (!path) {
       reject(new Error('Cannot load the database'));
     }
-
     //  allows you to operate on each line of the file
     const stream = fs.createReadStream(path);
     stream.on('error', () => {
@@ -21,20 +20,20 @@ async function countStudents(path) {
     });
 
     rl.on('close', () => {
-      console.log(`Number of students: ${dataHolder.length}`);
-      const groupData = dataHolder.reduce((acc, studentDetails) => {
-        const field = studentDetails[studentDetails.length - 1];
-        if (!acc[field]) acc[field] = [];
-        acc[field].push({
-          firstName: studentDetails[0],
-          lastName: studentDetails[1],
-          age: studentDetails[2],
-        });
-        return acc;
-      }, {});
-
+      const groupedData = [];
+      for (let i = 1; i < dataHolder.length; i += 1) {
+        // for each row extract all the data respectively
+        const [firstName, lastName, age, field] = dataHolder[i];
+        // group them according to the field
+        if (!groupedData[field]) {
+          groupedData[field] = [];
+        }
+        // push it to the list
+        groupedData[field].push({ firstName, lastName, age });
+      }
       // present the data correctly
-      for (const [field, students] of Object.entries(groupData)) {
+      console.log(`Number of students: ${dataHolder.length - 1}`);
+      for (const [field, students] of Object.entries(groupedData)) {
         const studentDept = students.map((student) => student.firstName);
         console.log(`Number of students in ${field}: ${students.length}. List: ${studentDept.join(', ')}`);
       }
