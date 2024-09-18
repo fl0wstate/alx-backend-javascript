@@ -10,18 +10,18 @@
 process.stdin.setEncoding('utf8');
 
 // Info to welcome the user
-process.stdout.write('Welcome to Holberton School, what is your name?\n');
+console.log('Welcome to Holberton School, what is your name?');
 
 // Listen for data from stdin (user input)
 if (process.stdin.isTTY) {
   process.stdin.on('data', (data) => {
-    process.stdout.write(`Your name is: ${data.toString().trim()}\n`);
+    console.log(`Your name is: ${data.toString().trim()}`);
     process.exit();
   });
 } else {
   process.stdin.on('data', (data) => {
-    process.stdout.write(`Your name is: ${data.toString().trim()}\n`);
-    process.stdout.write('This important software is now closing\n');
+    console.log(`Your name is: ${data.toString().trim()}`);
+    console.log('This important software is now closing');
     process.exit();
   });
 }
