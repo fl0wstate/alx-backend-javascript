@@ -9,8 +9,8 @@ class StudentsController {
       const fields = keys.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
       const response = ['This is the list of our students'];
       for (const field of fields) {
-        let newData = [];
-        data[field].forEach(element => {
+        const newData = [];
+        data[field].forEach((element) => {
           newData.push(element.firstName);
         });
         response.push(`Number of students in ${field}: ${data[field].length}. List: ${newData.join(', ')}`);
@@ -35,8 +35,8 @@ class StudentsController {
         response.status(500).send('Cannot load the database');
         return;
       }
-      let newData = [];
-      data[major].forEach(element => {
+      const newData = [];
+      data[major].forEach((element) => {
         newData.push(element.firstName);
       });
       const resp = `List: ${newData.join(', ')}`;
