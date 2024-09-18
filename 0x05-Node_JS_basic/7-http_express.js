@@ -26,18 +26,16 @@ function countStudents(filepath) {
         }
       });
       rl.on('close', () => {
-        const groupedData = dataHolder.reduce((acc, [firstName, lastName, age, field]) => {
+        const groupedData = dataHolder.slice(1).reduce((acc, [firstName, lastName, age, field]) => {
           if (!acc[field]) acc[field] = [];
           acc[field].push({ firstName, lastName, age });
           return acc;
         }, {});
         const result = [];
         result.push(`Number of students: ${dataHolder.length - 1}`);
-        for (const field in groupedData) {
-          if (Object.hasOwnProperty.call(groupedData, field)) {
-            const studentNames = groupedData[field].map((students) => students.firstName);
-            result.push(`Number of students in ${field}: ${groupedData[field].length}. List: ${studentNames.join(', ')}`);
-          }
+        for (const [field, students] of Object.entries(groupedData)) {
+          const studentDept = students.map((student) => student.firstName);
+          result.push(`Number of students in ${field}: ${students.length}. List: ${studentDept.join(', ')}`);
         }
         resolve(result);
       });
