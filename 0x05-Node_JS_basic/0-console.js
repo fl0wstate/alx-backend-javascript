@@ -1,5 +1,5 @@
 function displayMessage(data) {
-  process.stdout.write(`${data.toString().trim()}\n`);
+  console.log(`${data.toString().trim()}`);
 }
 
 module.exports = displayMessage;
