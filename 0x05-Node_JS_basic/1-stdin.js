@@ -13,28 +13,16 @@ process.stdin.setEncoding('utf8');
 // Print the initial welcome message
 process.stdout.write('Welcome to Holberton School, what is your name?\n');
 
-process.stdin.setEncoding('utf8');
-
-// Check if we are in an interactive terminal (TTY) or if input is being piped
+// Listen for data from stdin (user input)
 if (process.stdin.isTTY) {
-  // For interactive terminal input
   process.stdin.on('data', (data) => {
-    const name = data.toString().trim();
-    process.stdout.write(`Your name is: ${name}\r\n`);
+    console.log(`Your name is: ${data.toString().trim()}\n`);
     process.exit();
   });
 } else {
-  // For piped input
-  let inputData = '';
-
   process.stdin.on('data', (data) => {
-    inputData += data.toString();
-  });
-
-  process.stdin.on('end', () => {
-    const name = inputData.trim();
-    process.stdout.write(`Your name is: ${name}\r\n`);
-    process.stdout.write('This important software is now closing\n');
+    process.stdout.write(`Your name is: ${data.toString().trim()}\r`);
+    console.log('This important software is now closing');
     process.exit();
   });
 }
