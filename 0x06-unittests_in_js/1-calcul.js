@@ -1,24 +1,24 @@
 function sum(a, b) {
-  return a + b;
+  return Math.ceil(a + b);
 }
 
 function subtract(a, b) {
-  return a - b;
+  return Math.ceil(a - b);
 }
 
 function divide(a, b) {
   if (b === 0) {
     throw new Error('Division By Zero');
   }
-  return a / b;
+  return Math.ceil(a / b);
 }
 
 function calculateNumber(type, a, b) {
   if (typeof type === 'string' && typeof a === 'number' && typeof b === 'number' && !isNaN(a) && !isNaN(b)) {
     switch (type) {
-      case 'SUM': console.log(sum(a, b)); break;
-      case 'DIVIDE': console.log(divide(a, b)); break;
-      case 'SUBTRACT': console.log(subtract(a, b)); break;
+      case 'SUM': return sum(a, b); break;
+      case 'DIVIDE': return divide(a, b); break;
+      case 'SUBTRACT': return subtract(a, b); break;
       default: throw new Error('Invalid Type'); break;
     }
   }
