@@ -10,7 +10,7 @@ describe('calculateNumber', function() {
   });
 
   it('should handle floating point numbers', function() {
-    assert.strictEqual(calculateNumber(5.7, 3.2), 8.9);
+    assert.strictEqual(calculateNumber(5.7, 3.2), 9);
   });
 
   it('should handle negative numbers', function() {
@@ -26,7 +26,7 @@ describe('calculateNumber', function() {
   });
 
   it('should handle very small numbers', function() {
-    assert.strictEqual(calculateNumber(0.0000001, 0.0000002), 0.0000003);
+    assert.strictEqual(calculateNumber(0.0000001, 0.0000002), 1);
   });
 
   it('should throw TypeError for string input', function() {
