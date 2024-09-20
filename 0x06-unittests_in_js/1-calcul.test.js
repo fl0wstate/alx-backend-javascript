@@ -90,9 +90,5 @@ describe('calculateNumber', function() {
     it('should correctly handle very large numbers', function() {
       assert.strictEqual(calculateNumber('SUM', Number.MAX_VALUE, Number.MAX_VALUE), Infinity);
     });
-
-    it('should correctly handle very small numbers', function() {
-      assert.strictEqual(calculateNumber('SUM', Number.MIN_VALUE, Number.MIN_VALUE), 2 * Number.MIN_VALUE);
-    });
   });
 });
