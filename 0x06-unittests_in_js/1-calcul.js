@@ -1,16 +1,16 @@
 function sum(a, b) {
-  return Math.ceil(a + b);
+  return Math.round(a) + Math.round(b);
 }
 
 function subtract(a, b) {
-  return Math.ceil(a - b);
+  return Math.round(a) - Math.round(b);
 }
 
 function divide(a, b) {
   if (b === 0) {
     throw new Error('Division By Zero');
   }
-  return Math.ceil(a / b);
+  return Math.round(a) / Math.round(b);
 }
 
 function calculateNumber(type, a, b) {
