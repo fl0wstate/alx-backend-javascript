@@ -1,24 +1,26 @@
 function sum(a, b) {
-  return Math.round(a) + Math.round(b);
+  return a + b;
 }
 
 function subtract(a, b) {
-  return Math.round(a) - Math.round(b);
+  return a - b;
 }
 
 function divide(a, b) {
   if (b === 0) {
-    throw new Error('Division By Zero');
+    return ('Error');
   }
-  return Math.round(a) / Math.round(b);
+  return a / b;
 }
 
 function calculateNumber(type, a, b) {
   if (typeof type === 'string' && typeof a === 'number' && typeof b === 'number' && !isNaN(a) && !isNaN(b)) {
+    const k = Math.round(a);
+    const j = Math.round(b);
     switch (type) {
-      case 'SUM': return sum(a, b); break;
-      case 'DIVIDE': return divide(a, b); break;
-      case 'SUBTRACT': return subtract(a, b); break;
+      case 'SUM': return sum(k, j); break;
+      case 'DIVIDE': return divide(k, j); break;
+      case 'SUBTRACT': return subtract(k, j); break;
       default: throw new Error('Invalid Type'); break;
     }
   }

@@ -8,17 +8,19 @@ function subtract(a, b) {
 
 function divide(a, b) {
   if (b === 0) {
-    throw new Error('Division By Zero');
+    return ('Error');
   }
   return a / b;
 }
 
 function calculateNumber(type, a, b) {
   if (typeof type === 'string' && typeof a === 'number' && typeof b === 'number' && !isNaN(a) && !isNaN(b)) {
+    const k = Math.round(a);
+    const j = Math.round(b);
     switch (type) {
-      case 'SUM': console.log(sum(a, b)); break;
-      case 'DIVIDE': console.log(divide(a, b)); break;
-      case 'SUBTRACT': console.log(subtract(a, b)); break;
+      case 'SUM': return sum(k, j); break;
+      case 'DIVIDE': return divide(k, j); break;
+      case 'SUBTRACT': return subtract(k, j); break;
       default: throw new Error('Invalid Type'); break;
     }
   }

@@ -51,8 +51,11 @@ describe('calculateNumber', function() {
       expect(calculateNumber('DIVIDE', -4, 2)).to.equal(-2);
     });
 
-    it('should throw an error when dividing by zero', function() {
-      expect(() => calculateNumber('DIVIDE', 4, 0)).to.throw(Error);
+    it('should return Error if b is equal to 0', function() {
+      expect(calculateNumber('DIVIDE', 10.3, 0).toLowerCase()).to.equal('error');
+      expect(calculateNumber('DIVIDE', 10.7, 0).toLowerCase()).to.equal('error');
+      expect(calculateNumber('DIVIDE', 10.3, 0.3).toLowerCase()).to.equal('error');
+      expect(calculateNumber('DIVIDE', 10.7, 0.2).toLowerCase()).to.equal('error');
     });
   });
 
@@ -89,10 +92,6 @@ describe('calculateNumber', function() {
 
     it('should correctly handle very large numbers', function() {
       expect(calculateNumber('SUM', Number.MAX_VALUE, Number.MAX_VALUE)).to.equal(Infinity);
-    });
-
-    it('should correctly handle very small numbers', function() {
-      expect(calculateNumber('SUM', Number.MIN_VALUE, Number.MIN_VALUE)).to.equal(2 * Number.MIN_VALUE);
     });
   });
 });
