@@ -1,6 +1,6 @@
 function calculateNumber(a, b) {
   if (typeof a === 'number' && typeof b === 'number' && !isNaN(a) && !isNaN(b)) {
-    return (a + b);
+    console.log(a + b);
   }
   throw new TypeError('Both params should be of type integers');
 }
